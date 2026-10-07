@@ -1,8 +1,6 @@
 "use client";
 
-import { Terminal } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ClaudeMark, CodexMark, CursorMark } from "@/components/brand-logos";
 import { CopyCode } from "@/components/copy-code";
@@ -18,53 +16,116 @@ const cursorConfig = [
   "}",
 ].join("\n");
 
+const mcpTools = [
+  { name: "get_random_quote", desc: "Fetch a random quote with attribution" },
+  { name: "search_quotes", desc: "Filter by keywords, categories, or author" },
+  { name: "get_quote", desc: "Retrieve a specific entry by its ID" },
+  { name: "list_categories", desc: "Explore available taxonomy categories" },
+  { name: "list_authors", desc: "Inspect all curated authors in index" },
+];
+
 export function McpSetup() {
   return (
-    <div className="mt-10 space-y-10">
-      <div className="border border-white/10 bg-[#202020] p-5 sm:p-6">
-        <div className="flex items-start gap-3">
-          <Terminal className="mt-1 text-[#da291c]" size={18} />
-          <div>
-            <p className="text-sm font-medium text-white">MCP endpoint</p>
-          </div>
-        </div>
-        <CopyCode value={endpoint} label="MCP endpoint" context={"Paste this URL into your MCP client's server URL field."} />
-        <div className="mt-4 flex flex-wrap gap-2">
-          <Badge variant="outline" className="border-white/25 text-[#b7b7b7]">Streamable HTTP</Badge>
-          <Badge variant="outline" className="border-white/25 text-[#b7b7b7]">No auth</Badge>
-          <Badge variant="outline" className="border-white/25 text-[#b7b7b7]">Rate limited</Badge>
-        </div>
-      </div>
+    <div className="mt-8 space-y-8 sm:mt-10 sm:space-y-10">
+      <CopyCode
+        value={endpoint}
+        label="Endpoint URL"
+        context="Paste this URL directly into your MCP client configuration:"
+      />
 
       <div>
-        <p className="text-xs uppercase tracking-[0.16em] text-[#666]">Choose your client</p>
-        <Tabs defaultValue="codex" className="mt-4">
-          <TabsList variant="line" className="w-full justify-start gap-2 overflow-x-auto overflow-y-hidden border-b border-white/10 p-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <TabsTrigger value="codex" className="min-w-36 flex-none rounded-none border border-white/10 bg-[#202020] px-4 py-3 text-[#969696] hover:border-white/25 hover:bg-[#242424] hover:text-white data-active:border-[#da291c] data-active:bg-[#da291c]/10 data-active:text-white data-active:shadow-[inset_0_-2px_0_#da291c] after:hidden" aria-label="Codex setup"><CodexMark data-icon="inline-start" />Codex</TabsTrigger>
-            <TabsTrigger value="claude" className="min-w-36 flex-none rounded-none border border-white/10 bg-[#202020] px-4 py-3 text-[#969696] hover:border-white/25 hover:bg-[#242424] hover:text-white data-active:border-[#da291c] data-active:bg-[#da291c]/10 data-active:text-white data-active:shadow-[inset_0_-2px_0_#da291c] after:hidden" aria-label="Claude Code setup"><ClaudeMark data-icon="inline-start" />Claude Code</TabsTrigger>
-            <TabsTrigger value="cursor" className="min-w-36 flex-none rounded-none border border-white/10 bg-[#202020] px-4 py-3 text-[#969696] hover:border-white/25 hover:bg-[#242424] hover:text-white data-active:border-[#da291c] data-active:bg-[#da291c]/10 data-active:text-white data-active:shadow-[inset_0_-2px_0_#da291c] after:hidden" aria-label="Cursor setup"><CursorMark data-icon="inline-start" />Cursor</TabsTrigger>
+        <p className="text-xs uppercase tracking-[0.16em] text-[#666]">
+          Choose your client
+        </p>
+        <Tabs defaultValue="codex" className="mt-3">
+          <TabsList
+            className="grid grid-cols-3 sm:flex sm:justify-start gap-1.5 sm:gap-2 border-b border-white/10 pb-3"
+          >
+            <TabsTrigger
+              value="codex"
+              className="h-12 px-2.5 sm:px-6 text-xs sm:text-sm"
+              aria-label="Codex setup"
+            >
+              <CodexMark className="size-4 shrink-0" />
+              <span className="truncate">Codex</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="claude"
+              className="h-12 px-2.5 sm:px-6 text-xs sm:text-sm"
+              aria-label="Claude Code setup"
+            >
+              <ClaudeMark className="size-4 shrink-0" />
+              <span className="truncate">Claude</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="cursor"
+              className="h-12 px-2.5 sm:px-6 text-xs sm:text-sm"
+              aria-label="Cursor setup"
+            >
+              <CursorMark className="size-4 shrink-0" />
+              <span className="truncate">Cursor</span>
+            </TabsTrigger>
           </TabsList>
-          <TabsContent value="codex" className="pt-5">
-            <CopyCode value={`codex mcp add good-quotes --url ${endpoint}`} label="Codex command" context="Run this in your terminal." />
+          <TabsContent value="codex" className="pt-4 sm:pt-5">
+            <CopyCode
+              value={`codex mcp add good-quotes --url ${endpoint}`}
+              label="Terminal Command"
+              context="Run this command in your terminal to register the server:"
+            />
           </TabsContent>
-          <TabsContent value="claude" className="pt-5">
-            <CopyCode value={`claude mcp add --transport http good-quotes ${endpoint}`} label="Claude Code command" context="Run this in your terminal." />
+          <TabsContent value="claude" className="pt-4 sm:pt-5">
+            <CopyCode
+              value={`claude mcp add --transport http good-quotes ${endpoint}`}
+              label="Terminal Command"
+              context="Run this command in your terminal to register the server:"
+            />
           </TabsContent>
-          <TabsContent value="cursor" className="pt-5">
-            <CopyCode value={cursorConfig} label="Cursor configuration" context="Paste this into Cursor Settings → MCP as a global server." />
+          <TabsContent value="cursor" className="pt-4 sm:pt-5">
+            <CopyCode
+              value={cursorConfig}
+              label="Cursor JSON Config"
+              context="Paste this snippet into Cursor Settings → MCP as a global server:"
+            />
           </TabsContent>
         </Tabs>
       </div>
 
-      <div id="mcp-tools" className="border border-white/10 bg-[#202020] p-5 sm:p-6">
-        <p className="text-sm font-medium text-white">MCP tools</p>
-        <p className="mt-4 text-sm text-[#969696]">Available tools</p>
-        <code className="mt-2 block font-mono text-sm leading-7 text-white">get_random_quote<br />search_quotes<br />get_quote<br />list_categories<br />list_authors</code>
+      <div
+        id="mcp-tools"
+        className="w-full min-w-0 overflow-hidden border border-white/10 bg-[#202020] p-4 sm:p-6"
+      >
+        <p className="text-sm font-semibold uppercase tracking-[0.14em] text-white">
+          Registered MCP Tools
+        </p>
+        <p className="mt-1 text-xs text-[#969696]">
+          Tools exposed to your AI assistants
+        </p>
+        <div className="mt-4 grid gap-2 w-full min-w-0">
+          {mcpTools.map((tool) => (
+            <div
+              key={tool.name}
+              className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border border-white/5 bg-[#242424] p-3 text-xs w-full min-w-0"
+            >
+              <code className="font-mono text-[#da291c] font-medium break-all sm:break-normal">
+                {tool.name}
+              </code>
+              <span className="text-[#969696]">{tool.desc}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
-      <Alert className="rounded-none border-white/10 bg-[#242424] text-[#969696]">
-        <AlertTitle className="text-white">Troubleshooting</AlertTitle>
-        <AlertDescription>Use a URL ending in <code className="text-white">/mcp</code>. <code className="text-white">429</code> means the global rate limit was reached. No API key is required.</AlertDescription>
+      <Alert className="rounded-none border-white/10 bg-[#242424] text-[#969696] p-4 sm:p-5">
+        <AlertTitle className="text-white text-sm font-medium">
+          Troubleshooting
+        </AlertTitle>
+        <AlertDescription className="mt-1 text-xs leading-relaxed text-[#969696]">
+          Make sure your client points to the full URL path ending in{" "}
+          <code className="text-white font-mono">/mcp</code>. HTTP status{" "}
+          <code className="text-white font-mono">429</code> indicates global
+          rate limit has temporarily applied. No API key or registration is
+          required.
+        </AlertDescription>
       </Alert>
     </div>
   );

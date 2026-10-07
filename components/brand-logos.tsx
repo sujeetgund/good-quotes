@@ -17,10 +17,29 @@ export function CursorMark(props: LogoProps) {
 
 export function BrandLogos() {
   const clients = [
-    { name: "Codex", href: "https://developers.openai.com/learn/docs-mcp", icon: <CodexMark className="size-7 text-[#181818]" /> },
-    { name: "Claude Code", href: "https://docs.anthropic.com/en/docs/claude-code/mcp", icon: <ClaudeMark className="size-7" /> },
-    { name: "Cursor", href: "https://cursor.com/", icon: <CursorMark className="size-7 text-[#26251e]" /> },
+    { name: "Codex", href: "https://developers.openai.com/learn/docs-mcp", icon: <CodexMark className="size-6 text-[#181818]" /> },
+    { name: "Claude Code", href: "https://docs.anthropic.com/en/docs/claude-code/mcp", icon: <ClaudeMark className="size-6" /> },
+    { name: "Cursor", href: "https://cursor.com/", icon: <CursorMark className="size-6 text-[#26251e]" /> },
   ];
 
-  return <div className="mt-10"><p className="text-xs uppercase tracking-[0.16em] text-[#666]">Connect from your MCP client</p><div className="mt-4 grid gap-3 sm:grid-cols-3">{clients.map((client) => <a key={client.name} href={client.href} target="_blank" rel="noreferrer" className="flex items-center gap-3 border border-white/10 bg-[#242424] px-4 py-4 text-sm text-white transition-colors hover:border-white/30"><span className="flex size-10 items-center justify-center bg-[#f7f7f7]">{client.icon}</span><span>{client.name}</span><ArrowUpRight data-icon="inline-end" className="ml-auto text-[#666]" /></a>)}</div></div>;
+  return (
+    <div className="mt-8 sm:mt-10">
+      <p className="text-xs uppercase tracking-[0.16em] text-[#666]">Connect from your MCP client</p>
+      <div className="mt-3 grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-3">
+        {clients.map((client) => (
+          <a
+            key={client.name}
+            href={client.href}
+            target="_blank"
+            rel="noreferrer"
+            className="flex min-h-12 items-center gap-3 border border-white/10 bg-[#242424] px-4 py-3 text-sm text-white transition-colors hover:border-white/30 focus-visible:ring-2 focus-visible:ring-[#da291c]"
+          >
+            <span className="flex size-9 shrink-0 items-center justify-center bg-[#f7f7f7]">{client.icon}</span>
+            <span className="font-medium text-xs sm:text-sm">{client.name}</span>
+            <ArrowUpRight className="ml-auto size-4 text-[#666]" />
+          </a>
+        ))}
+      </div>
+    </div>
+  );
 }
