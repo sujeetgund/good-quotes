@@ -19,11 +19,13 @@ export function jsonError(message: string, status: number, details?: Record<stri
 }
 
 export function jsonData<T>(data: T, init?: ResponseInit) {
+  const headers = new Headers(init?.headers);
+  if (!headers.has("Cache-Control")) {
+    headers.set("Cache-Control", "public, max-age=60, s-maxage=300");
+  }
+
   return Response.json({ data }, {
     ...init,
-    headers: {
-      "Cache-Control": "public, max-age=60, s-maxage=300",
-      ...init?.headers,
-    },
+    headers,
   });
 }

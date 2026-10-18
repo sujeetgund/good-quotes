@@ -15,7 +15,7 @@ export function QuoteShowcase({ initialQuote }: { initialQuote: Quote }) {
     setLoading(true);
     setCopied(false);
     try {
-      const response = await fetch("/api/quotes/random", { cache: "no-store" });
+      const response = await fetch(`/api/quotes/random?t=${Date.now()}`, { cache: "no-store" });
       if (response.ok) {
         const payload = (await response.json()) as { data: Quote };
         setQuote(payload.data);

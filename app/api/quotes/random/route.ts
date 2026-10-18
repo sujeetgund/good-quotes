@@ -2,6 +2,8 @@ import { apiRateHeaders, enforceRateLimit, jsonData, jsonError } from "@/lib/api
 import { getRandomQuote } from "@/lib/quotes";
 import { quoteCategories, type QuoteCategory } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: Request) {
   const rate = await enforceRateLimit(request);
   if (rate.blocked) return rate.blocked;
@@ -19,5 +21,12 @@ export async function GET(request: Request) {
     tag: searchParams.get("tag") || undefined,
   });
 
-  return quote ? jsonData(quote, { headers: apiRateHeaders(rate.result) }) : jsonError("No quote matched those filters.", 404);
+  return quote
+    ? jsonData(quote, {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+          ...apiRateHeaders(rate.result),
+        },
+      })
+    : jsonError("No quote matched those filters.", 404);
 }
